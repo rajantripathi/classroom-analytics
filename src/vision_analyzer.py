@@ -245,13 +245,18 @@ class VisionAnalyzer:
         return None
 
     @staticmethod
-    def _transcode_to_h264(path: Path) -> bool:
+    def _transcode_to_h264(path: Path, audio_source: Path | None = None) -> bool:
         """Re-encode the OpenCV output to browser-playable H.264, in place.
 
         OpenCV typically writes ``mp4v`` (MPEG-4 Part 2), which HTML5 video — and
         therefore Streamlit's ``st.video`` — cannot decode. We transcode to H.264
         (yuv420p, +faststart) with the bundled ffmpeg so the annotated clip plays
         in the dashboard and the demo video.
+
+        When ``audio_source`` (the original clip) is given, its audio track is
+        muxed in so the annotated output keeps the original sound. ``-shortest``
+        trims audio to the (possibly capped) annotated video length; the optional
+        audio map (``1:a:0?``) is a no-op for clips that have no audio.
         """
         try:
             import subprocess
@@ -260,11 +265,13 @@ class VisionAnalyzer:
 
             ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
             tmp = path.with_name(path.stem + "_h264.mp4")
-            proc = subprocess.run(
-                [ffmpeg, "-y", "-i", str(path), "-c:v", "libx264", "-preset", "veryfast",
-                 "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-an", str(tmp)],
-                capture_output=True, text=True,
-            )
+            cmd = [ffmpeg, "-y", "-i", str(path)]
+            if audio_source is not None:
+                cmd += ["-i", str(audio_source), "-map", "0:v:0", "-map", "1:a:0?", "-shortest"]
+            cmd += ["-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p", "-movflags", "+faststart"]
+            cmd += ["-c:a", "aac", "-b:a", "128k"] if audio_source is not None else ["-an"]
+            cmd += [str(tmp)]
+            proc = subprocess.run(cmd, capture_output=True, text=True)
             if proc.returncode == 0 and tmp.exists() and tmp.stat().st_size > 0:
                 path.unlink(missing_ok=True)
                 tmp.replace(path)
@@ -379,7 +386,7 @@ class VisionAnalyzer:
         capture.release()
         if writer is not None:
             writer.release()
-            if output_path.exists() and output_path.stat().st_size > 0 and not self._transcode_to_h264(output_path):
+            if output_path.exists() and output_path.stat().st_size > 0 and not self._transcode_to_h264(output_path, audio_source=path):
                 warnings.append("Annotated video could not be re-encoded to H.264; it may not play in the browser.")
 
         if progress_callback:

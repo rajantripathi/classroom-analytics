@@ -47,7 +47,11 @@ def build_ai_insight_summary(summary: dict[str, Any]) -> str:
 
     speech_extra = ""
     if questions:
-        speech_extra += f" The teacher asked roughly {questions} questions, a marker of interactive instruction."
+        speech_extra += (
+            f" The speaker posed roughly {questions} questions during the lesson, indicating a "
+            "questioning, inquiry-led delivery (these are questions in the speaker's own audio, "
+            "not measured student responses)."
+        )
     if topic:
         speech_extra += f" Prominent lesson keywords include {topic}."
 

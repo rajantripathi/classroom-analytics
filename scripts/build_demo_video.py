@@ -328,15 +328,15 @@ def main():
                         f"platform surfaced the lesson's focus — words like group, period, and "
                         f"electronic configuration, the vocabulary of a chemistry lesson on the "
                         f"periodic table. It measured a brisk {round(s3['speaking_pace_wpm'])} words "
-                        f"a minute, and counted {s3.get('question_count', 0)} questions — a clear "
-                        f"marker of interactive teaching."),
+                        f"a minute, and counted {s3.get('question_count', 0)} questions posed by the "
+                        f"teacher — a signal of a questioning, inquiry-led style."),
              render=lambda p: slide_clip(p, "Understanding the lesson", "Teacher Speaking",
-                        [("Speaking Pace", f"{s3['speaking_pace_wpm']} WPM"), ("Questions Asked", s3.get('question_count', 0)),
+                        [("Speaking Pace", f"{s3['speaking_pace_wpm']} WPM"), ("Questions Posed", s3.get('question_count', 0)),
                          ("Talk Ratio", f"{s3.get('talk_ratio', 0) * 100:.0f}%"), ("Word Count", s3['word_count'])],
                         "Lesson focus surfaced from speech: " + ", ".join((s3.get("keywords") or [])[:5])
-                        + " — with the teacher's questions counted as a marker of interactive teaching.")),
+                        + " — with the teacher's own questions counted as a signal of a questioning, inquiry-led style.")),
         dict(key="04_c3_footage", kind="footage", video=av(order[2]), start=2.0,
-             lt=("Teacher Speaking", f"{s3.get('question_count', 0)} questions · {s3['speaking_pace_wpm']} WPM"),
+             lt=("Teacher Speaking", f"{s3.get('question_count', 0)} questions posed · {s3['speaking_pace_wpm']} WPM"),
              narration=("It even captures the lesson's keywords and a full transcript — the "
                         "content of teaching — without ever identifying who is speaking.")),
 

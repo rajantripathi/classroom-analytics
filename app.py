@@ -418,9 +418,10 @@ def main() -> None:
     audio = result.get("audio", {})
     if audio.get("status") == "ok" and audio.get("word_count"):
         st.subheader("Speech Insights")
+        st.caption("From the speaker's audio only — aggregate signals, no speaker identification or student responses.")
         speech_cols = st.columns(4)
         with speech_cols[0]:
-            kpi_card("Questions Asked", audio.get("question_count", 0))
+            kpi_card("Questions Posed", audio.get("question_count", 0))
         with speech_cols[1]:
             kpi_card("Talk Ratio", f"{float(audio.get('talk_ratio', 0)):.0%}")
         with speech_cols[2]:
@@ -436,7 +437,7 @@ def main() -> None:
             )
         sample_questions = audio.get("sample_questions", []) or []
         if sample_questions:
-            with st.expander("Sample questions detected", expanded=False):
+            with st.expander("Sample questions posed by the speaker", expanded=False):
                 for question in sample_questions:
                     st.markdown(f"- {question}")
 
