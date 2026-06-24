@@ -2,11 +2,11 @@
 
 ## North Star
 
-Build a credible, client-facing Classroom Intelligence Demo for an RFP/proposal conversation. The goal is not research-grade AI perfection; the goal is a polished, explainable, working prototype that makes the Smart Education / Classroom Analytics platform feel real in a client demo video.
+Build a credible Classroom Intelligence Demo. The goal is not research-grade AI perfection; the goal is a polished, explainable, working prototype that makes the Smart Education / Classroom Analytics platform concept feel real in a demo video.
 
 The demo should look professional, stable, and believable. Prioritize clarity, clean UI, smooth demo flow, and strong narrative over adding complex new AI features.
 
-## Client-Facing Positioning
+## Positioning
 
 This is a pretrained inference demo:
 
@@ -95,7 +95,7 @@ The teacher-speaking clip produced a Whisper transcript successfully.
 
 ## Demo Video Goal
 
-We will create a short client demo video that shows the platform concept clearly:
+We will create a short demo video that shows the platform concept clearly:
 
 1. Open with the Streamlit dashboard title: Classroom Intelligence Demo.
 2. Show GPU/runtime status in the sidebar to reinforce technical credibility.
@@ -107,7 +107,7 @@ We will create a short client demo video that shows the platform concept clearly
 8. Show export/report capability: JSON, CSV, Markdown, HTML.
 9. End with the privacy message: aggregate analytics only, no identity recognition.
 
-The video should feel like a credible RFP prototype, not a hackathon script. Avoid overclaiming accuracy.
+The video should feel like a credible prototype, not a hackathon script. Avoid overclaiming accuracy.
 
 ## Suggested Next Steps For Claude
 
@@ -115,20 +115,20 @@ The video should feel like a credible RFP prototype, not a hackathon script. Avo
 2. Polish any rough Streamlit layout issues that appear in the browser.
 3. Make the demo story smoother for screen recording.
 4. Add a “Demo Mode” option if useful, showing latest generated outputs without rerunning long analyses.
-5. Review output reports for client-friendly language.
+5. Review output reports for clear, plain-language summaries.
 6. Prepare a short narration/script for the demo video.
 7. Do not add training, face recognition, student identification, or emotion detection.
 
 ## GitHub Recommendation
 
-Yes, it is a good idea to push the code to GitHub, preferably to a private repository, but do not push the large video clips, generated annotated videos, model weights, or client-sensitive outputs directly.
+Yes, it is a good idea to push the code to GitHub, but do not push the large video clips, generated annotated videos, model weights, or sensitive outputs directly.
 
 Recommended:
 
 - Push source code, config, scripts, README, and this handoff file.
 - Keep `outputs/`, `.venv/`, `yolov8n.pt`, and raw demo videos out of normal Git.
 - If video assets must be versioned, use Git LFS or a private shared drive.
-- Keep the repository private unless all media rights and client-sensitivity questions are cleared.
+- Confirm media rights and any sensitivity questions before sharing the demo media publicly.
 - Add a small sample manifest or placeholder instructions instead of committing large classroom media.
 
 The existing `.gitignore` already excludes many generated files, but check it before the first commit.

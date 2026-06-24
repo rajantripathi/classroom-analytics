@@ -142,7 +142,7 @@ def generate_html_report(markdown_report: str, result: dict[str, Any]) -> str:
   <main>
     <header>
       <h1>Classroom Intelligence Demo Report</h1>
-      <div>Anonymous aggregate analytics for proposal review</div>
+      <div>Anonymous aggregate analytics for classroom-level review</div>
     </header>
     <section class="insight">{insight}</section>
     <pre>{escaped_markdown}</pre>

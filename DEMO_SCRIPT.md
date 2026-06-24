@@ -1,6 +1,6 @@
 # Classroom Intelligence Demo — Recording Script
 
-A recording-ready narration and shot list for the client/RFP demo video.
+A recording-ready narration and shot list for the demo video.
 Target length: **2:30–3:30**. Tone: confident, concrete, no overclaiming.
 
 ## Before You Record
@@ -72,7 +72,7 @@ result, click **Load saved result**. The dashboard fills in immediately.
 and play a few seconds showing the anonymous person boxes and tracking IDs.
 **Say:**
 > "The AI Insight Summary turns those numbers into a plain-language read for a
-> non-technical stakeholder. And here's the annotated video — anonymous
+> non-technical viewer. And here's the annotated video — anonymous
 > bounding boxes and tracking IDs only. No faces, no names, no identity
 > matching."
 
@@ -89,7 +89,7 @@ teacher clip, the Speaking Activity chart.
 buttons. Optionally open the HTML report in a new tab.
 **Say:**
 > "Every run is exportable — JSON and CSV for your data team, plus a clean
-> Markdown and HTML report for stakeholders. Nothing is locked inside the tool."
+> Markdown and HTML report for reviewers. Nothing is locked inside the tool."
 
 ### 9. Close — privacy (2:55–3:15)
 **On screen:** Return to the top, or show the report's privacy note / the

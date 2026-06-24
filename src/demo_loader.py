@@ -2,7 +2,7 @@
 
 The dashboard normally builds a ``result`` dict live by running YOLO/Whisper,
 then persists the full dict as ``outputs/metrics/<base>_metrics.json`` (see
-``report_generator.save_all_exports``). For a smooth client demo we can skip the
+``report_generator.save_all_exports``). For a smooth demo we can skip the
 long recompute and reload the latest saved result instantly.
 
 Note: the persisted JSON contains every ``result`` key except ``exports`` (that

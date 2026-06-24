@@ -259,7 +259,7 @@ def main() -> None:
           <h1 class="demo-title">Classroom Intelligence Demo</h1>
           <div class="demo-subtitle">
             Anonymous camera and microphone analytics for classroom occupancy, movement, speech cadence,
-            and proposal-ready reporting.
+            and exportable reporting.
           </div>
         </div>
         """,

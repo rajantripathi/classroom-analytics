@@ -1,6 +1,6 @@
 # Classroom Intelligence Demo
 
-A lean Streamlit prototype for an RFP/proposal discussion around a Smart Education and Classroom Intelligence platform. The demo uses local classroom clips to produce anonymous aggregate analytics: occupancy, movement energy, transition intensity, stationary/seated proxies, speech cadence, and exportable client-facing reports.
+A lean Streamlit prototype that explores a Smart Education and Classroom Intelligence concept. The demo uses local classroom clips to produce anonymous aggregate analytics: occupancy, movement energy, transition intensity, stationary/seated proxies, speech cadence, and exportable reports.
 
 This prototype uses pretrained YOLOv8n inference and rule-based demo proxy metrics. It has not been trained or fine-tuned on the four classroom clips; those clips are local demo inputs only.
 
@@ -25,7 +25,7 @@ This prototype uses pretrained YOLOv8n inference and rule-based demo proxy metri
 - Dashboard insights: KPI cards, charts, annotated videos, and an AI insight summary.
 - Reports: JSON, CSV, Markdown, and HTML outputs per analyzed clip.
 
-This is a proposal-grade demo, not a research-grade classroom model. The metrics are explainable proxies designed to make the RFP conversation concrete.
+This is a demonstration prototype, not a research-grade classroom model. The metrics are explainable proxies designed to make the platform concept concrete.
 
 ## Project Structure
 
@@ -67,7 +67,7 @@ cd "C:\Users\AUT\Desktop\classroom analyics"
 streamlit run app.py
 ```
 
-The exact quick demo command sequence requested for the RFP machine is:
+The quick demo command sequence is:
 
 ```powershell
 cd "C:\Users\AUT\Desktop\classroom analyics"
@@ -163,7 +163,7 @@ the sidebar pick a saved result and click `Load saved result`. A banner marks th
 dashboard as showing a saved result; `Run Analysis` still performs a fresh
 computation with the identical pipeline.
 
-## Demo Script For Lenovo / Client
+## Demo Script
 
 A full recording-ready narration and shot list lives in [`DEMO_SCRIPT.md`](DEMO_SCRIPT.md).
 Quick version:
@@ -182,7 +182,7 @@ This prototype does not perform face recognition, student identification, identi
 
 ## Pretrained Inference, Not Training
 
-The four demo videos are too small and not labelled, so they are not used to train or fine-tune a classroom AI model. The MVP intentionally uses pretrained YOLOv8n person detection, Ultralytics tracking, Whisper speech transcription, and transparent proxy metrics for proposal storytelling.
+The four demo videos are too small and not labelled, so they are not used to train or fine-tune a classroom AI model. The MVP intentionally uses pretrained YOLOv8n person detection, Ultralytics tracking, Whisper speech transcription, and transparent proxy metrics for demonstration purposes.
 
 ## Demo-Only Proxy Metrics
 
@@ -192,4 +192,4 @@ The four demo videos are too small and not labelled, so they are not used to tra
 - `teacher_movement_proxy`: aggregate movement proxy when teacher-specific classification is not available.
 - `classroom_state`: rule-based label inferred from occupancy, movement, stationary ratio, and speech pace.
 
-These are suitable for an RFP prototype and should be validated or replaced with domain-specific models before production use.
+These are suitable for a demonstration prototype and should be validated or replaced with domain-specific models before production use.
