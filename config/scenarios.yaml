@@ -1,0 +1,72 @@
+scenarios:
+  kids_walking:
+    title: "Kids Walking / Transitions"
+    description: "Tracks students walking and transitioning inside classroom space."
+    expected_metrics:
+      - person_count
+      - movement_energy
+      - transition_intensity
+
+  kids_seated:
+    title: "Kids Seated / Independent Learning"
+    description: "Monitors seated students, occupancy, and stillness as engagement proxies."
+    expected_metrics:
+      - occupancy
+      - stationary_ratio
+      - engagement_proxy
+
+  teacher_speaking:
+    title: "Teacher Speaking"
+    description: "Analyzes teacher speech cadence, word count, and lesson transcript."
+    expected_metrics:
+      - word_count
+      - words_per_minute
+      - speaking_time
+      - lesson_summary
+
+  teacher_moving:
+    title: "Teacher Moving"
+    description: "Tracks teacher circulation and classroom positioning using movement proxies."
+    expected_metrics:
+      - teacher_movement_proxy
+      - movement_path
+      - zone_coverage
+
+  aggregate_dynamics:
+    title: "Aggregate Classroom Dynamics"
+    description: "Combines classroom occupancy, movement energy, and audio/activity signals."
+    expected_metrics:
+      - classroom_state
+      - engagement_score
+      - activity_index
+
+scan_dirs:
+  - "."
+  - "data"
+  - "videos"
+  - "media"
+  - "assets"
+  - "clips"
+  - "input"
+
+processing_presets:
+  Low:
+    frame_stride: 10
+    max_seconds: 60
+  Medium:
+    frame_stride: 5
+    max_seconds: 90
+  High:
+    frame_stride: 2
+    max_seconds: 120
+
+manual_mappings:
+  Task1_Kids_Walking.webm:
+    - kids_walking
+  Task2_4_CCTV_Chairs_Moving.mkv:
+    - kids_seated
+    - teacher_moving
+  Task3_Teacher_Speaking.webm:
+    - teacher_speaking
+  Task5_Aggregate_Classroom.mkv:
+    - aggregate_dynamics

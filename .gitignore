@@ -1,0 +1,26 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+outputs/annotated_videos/*
+outputs/metrics/*
+outputs/reports/*
+outputs/cache/
+outputs/validation_tmp/
+*.pt
+
+# Large raw demo media — keep out of normal Git (use Git LFS / shared drive if needed)
+*.webm
+*.mkv
+*.mp4
+*.avi
+*.mov
+
+# Client-facing source documents — un-ignore only once media rights / sensitivity are cleared
+*.pdf
+*.docx
+
+!outputs/annotated_videos/.gitkeep
+!outputs/metrics/.gitkeep
+!outputs/reports/.gitkeep
