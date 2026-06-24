@@ -8,6 +8,7 @@ import pandas as pd
 import streamlit as st
 
 from src.audio_analyzer import analyze_audio
+from src.demo_loader import load_saved_results
 from src.media_index import build_media_manifest, load_config, media_for_scenario, save_media_manifest, scenario_options
 from src.metrics import summarize_analysis
 from src.report_generator import save_all_exports
@@ -36,6 +37,11 @@ def load_manifest(root: str) -> list[dict[str, Any]]:
     manifest = build_media_manifest(Path(root), include_durations=True)
     save_media_manifest(manifest, Path(root))
     return manifest
+
+
+@st.cache_data(ttl=20)
+def load_demo_results(root: str) -> list[dict[str, Any]]:
+    return load_saved_results(Path(root))
 
 
 def apply_theme() -> None:
@@ -163,7 +169,7 @@ def render_chart(data: pd.DataFrame, x: str, y: str, title: str, color: str = "#
             plot_bgcolor="rgba(255,255,255,0.72)",
             font=dict(color="#13222d"),
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
     except Exception:
         st.subheader(title)
         st.line_chart(data.set_index(x)[y])
@@ -282,7 +288,7 @@ def main() -> None:
             "analytics are anonymous proxy metrics."
         )
 
-        if st.button("Refresh media index", use_container_width=True):
+        if st.button("Refresh media index", width="stretch"):
             st.cache_data.clear()
             st.rerun()
 
@@ -313,7 +319,23 @@ def main() -> None:
         model_name = st.text_input("YOLO model", value="yolov8n.pt")
         confidence = float(st.slider("Detection confidence", min_value=0.1, max_value=0.8, value=0.25, step=0.05))
         run_audio = st.checkbox("Run audio analytics", value=True)
-        analyze_clicked = st.button("Run Analysis", type="primary", use_container_width=True, disabled=not selected_media)
+        analyze_clicked = st.button("Run Analysis", type="primary", width="stretch", disabled=not selected_media)
+
+        st.markdown("---")
+        st.caption("Demo Mode — instant playback of a saved result, no recompute")
+        demo_results = load_demo_results(str(ROOT))
+        if demo_results:
+            demo_index = st.selectbox(
+                "Saved result",
+                options=list(range(len(demo_results))),
+                format_func=lambda i: demo_results[i]["demo_label"],
+            )
+            if st.button("Load saved result", width="stretch"):
+                st.session_state["analysis_result"] = demo_results[demo_index]
+                st.session_state["result_source"] = "demo"
+                st.rerun()
+        else:
+            st.caption("No saved results yet. Run an analysis to populate Demo Mode.")
 
     if not manifest:
         st.warning("No videos or images were found in the project folder. Add media under data, videos, media, assets, clips, or input.")
@@ -329,7 +351,7 @@ def main() -> None:
         if selected_media["kind"] == "video":
             st.video(selected_media["path"])
         else:
-            st.image(selected_media["path"], use_container_width=True)
+            st.image(selected_media["path"], width="stretch")
     with right:
         st.subheader(scenario.get("title", "Scenario"))
         st.write(scenario.get("description", ""))
@@ -354,15 +376,21 @@ def main() -> None:
                 confidence=confidence,
                 run_audio=run_audio,
             )
+            st.session_state["result_source"] = "live"
 
     result = st.session_state.get("analysis_result")
     if not result:
         with st.expander("Media Manifest", expanded=False):
-            st.dataframe(pd.DataFrame(manifest), use_container_width=True, hide_index=True)
+            st.dataframe(pd.DataFrame(manifest), width="stretch", hide_index=True)
         return
 
     summary = result.get("summary", {})
     st.divider()
+    if st.session_state.get("result_source") == "demo":
+        st.info(
+            f"Demo Mode — showing a previously saved result: {result.get('demo_label', '')}. "
+            "Use Run Analysis in the sidebar for a fresh computation."
+        )
     st.subheader("KPI Summary")
     row_one = st.columns(4)
     with row_one[0]:
@@ -420,11 +448,11 @@ def main() -> None:
                 label=label.replace("_", " ").title(),
                 data=path.read_bytes(),
                 file_name=path.name,
-                use_container_width=True,
+                width="stretch",
             )
 
     with st.expander("Media Manifest", expanded=False):
-        st.dataframe(pd.DataFrame(manifest), use_container_width=True, hide_index=True)
+        st.dataframe(pd.DataFrame(manifest), width="stretch", hide_index=True)
 
 
 if __name__ == "__main__":
