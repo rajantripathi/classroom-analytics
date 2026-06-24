@@ -153,13 +153,26 @@ Run validation across all four clips:
 
 This generates full annotated videos, JSON metrics, CSV files, and reports for each classroom clip.
 
+## Demo Mode
+
+For a smooth screen recording, the sidebar includes a **Demo Mode** control that
+loads a previously generated result instantly — repopulating the KPI cards, AI
+insight, annotated video, charts, and export downloads without rerunning
+YOLO/Whisper. Pre-run each clip once (or use the existing `outputs/`), then in
+the sidebar pick a saved result and click `Load saved result`. A banner marks the
+dashboard as showing a saved result; `Run Analysis` still performs a fresh
+computation with the identical pipeline.
+
 ## Demo Script For Lenovo / Client
+
+A full recording-ready narration and shot list lives in [`DEMO_SCRIPT.md`](DEMO_SCRIPT.md).
+Quick version:
 
 1. Launch with `streamlit run app.py`.
 2. Select a scenario in the sidebar.
 3. Pick the matching classroom clip.
-4. Use `Medium` processing for a quick but credible run.
-5. Click `Run Analysis`.
+4. Use `Medium` processing for a quick but credible run, or use `Demo Mode` to load a saved result instantly.
+5. Click `Run Analysis` (or `Load saved result`).
 6. Show the original clip, annotated output, KPI cards, charts, and AI Insight Summary.
 7. Download the HTML report and JSON/CSV metrics to demonstrate exportability.
 
