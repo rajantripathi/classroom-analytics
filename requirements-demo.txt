@@ -1,0 +1,6 @@
+# Tooling for scripts/build_demo_video.py (renders the narrated demo video).
+# Install into the same venv:  pip install -r requirements-demo.txt
+#
+# Pillow and imageio-ffmpeg are already pulled in by the core requirements,
+# so the only extra dependency is the neural text-to-speech engine.
+edge-tts>=7.2.0

@@ -8,6 +8,7 @@ outputs/metrics/*
 outputs/reports/*
 outputs/cache/
 outputs/validation_tmp/
+outputs/demo_video/
 *.pt
 
 # Large raw demo media — keep out of normal Git (use Git LFS / shared drive if needed)
@@ -20,6 +21,10 @@ outputs/validation_tmp/
 # Client-facing source documents — un-ignore only once media rights / sensitivity are cleared
 *.pdf
 *.docx
+
+# Internal docs — kept local, never pushed to the public repo
+CLAUDE_HANDOFF.md
+EXECUTIVE_BRIEF.md
 
 !outputs/annotated_videos/.gitkeep
 !outputs/metrics/.gitkeep
