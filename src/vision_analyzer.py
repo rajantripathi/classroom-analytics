@@ -244,6 +244,37 @@ class VisionAnalyzer:
             writer.release()
         return None
 
+    @staticmethod
+    def _transcode_to_h264(path: Path) -> bool:
+        """Re-encode the OpenCV output to browser-playable H.264, in place.
+
+        OpenCV typically writes ``mp4v`` (MPEG-4 Part 2), which HTML5 video — and
+        therefore Streamlit's ``st.video`` — cannot decode. We transcode to H.264
+        (yuv420p, +faststart) with the bundled ffmpeg so the annotated clip plays
+        in the dashboard and the demo video.
+        """
+        try:
+            import subprocess
+
+            import imageio_ffmpeg
+
+            ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
+            tmp = path.with_name(path.stem + "_h264.mp4")
+            proc = subprocess.run(
+                [ffmpeg, "-y", "-i", str(path), "-c:v", "libx264", "-preset", "veryfast",
+                 "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-an", str(tmp)],
+                capture_output=True, text=True,
+            )
+            if proc.returncode == 0 and tmp.exists() and tmp.stat().st_size > 0:
+                path.unlink(missing_ok=True)
+                tmp.replace(path)
+                return True
+            if tmp.exists():
+                tmp.unlink(missing_ok=True)
+        except Exception:
+            pass
+        return False
+
     def analyze_video(
         self,
         video_path: str | Path,
@@ -348,6 +379,8 @@ class VisionAnalyzer:
         capture.release()
         if writer is not None:
             writer.release()
+            if output_path.exists() and output_path.stat().st_size > 0 and not self._transcode_to_h264(output_path):
+                warnings.append("Annotated video could not be re-encoded to H.264; it may not play in the browser.")
 
         if progress_callback:
             progress_callback(1.0, "Vision analysis complete")
