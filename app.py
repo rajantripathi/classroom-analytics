@@ -415,6 +415,31 @@ def main() -> None:
     st.subheader("AI Insight Summary")
     st.markdown(f'<div class="insight-box">{summary.get("ai_insight_summary", "")}</div>', unsafe_allow_html=True)
 
+    audio = result.get("audio", {})
+    if audio.get("status") == "ok" and audio.get("word_count"):
+        st.subheader("Speech Insights")
+        speech_cols = st.columns(4)
+        with speech_cols[0]:
+            kpi_card("Questions Asked", audio.get("question_count", 0))
+        with speech_cols[1]:
+            kpi_card("Talk Ratio", f"{float(audio.get('talk_ratio', 0)):.0%}")
+        with speech_cols[2]:
+            kpi_card("Unique Words", audio.get("unique_words", 0))
+        with speech_cols[3]:
+            kpi_card("Avg Sentence", f"{audio.get('avg_words_per_sentence', 0)} words")
+        keywords = audio.get("keywords", []) or []
+        if keywords:
+            st.markdown(
+                "**Lesson keywords:** "
+                + " ".join(f'<span class="status-pill">{keyword}</span>' for keyword in keywords),
+                unsafe_allow_html=True,
+            )
+        sample_questions = audio.get("sample_questions", []) or []
+        if sample_questions:
+            with st.expander("Sample questions detected", expanded=False):
+                for question in sample_questions:
+                    st.markdown(f"- {question}")
+
     annotated_path = result.get("vision", {}).get("annotated_video_path")
     if annotated_path:
         st.subheader("Annotated Processed Video")

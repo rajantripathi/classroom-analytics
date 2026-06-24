@@ -41,12 +41,22 @@ def build_ai_insight_summary(summary: dict[str, Any]) -> str:
     movement = summary.get("movement_energy", 0)
     stationary = summary.get("stationary_ratio", 0)
     wpm = summary.get("speaking_pace_wpm", 0)
+    questions = summary.get("question_count", 0)
+    keywords = summary.get("keywords", []) or []
+    topic = ", ".join(keywords[:4])
+
+    speech_extra = ""
+    if questions:
+        speech_extra += f" The teacher asked roughly {questions} questions, a marker of interactive instruction."
+    if topic:
+        speech_extra += f" Prominent lesson keywords include {topic}."
 
     if state == "Teacher-led":
         return (
             f"The clip shows a teacher-led pattern with about {occupancy:.1f} detected people on "
             f"average and speech pacing near {wpm:.0f} words per minute. Movement remains "
             "secondary to instruction, which is consistent with whole-class explanation."
+            + speech_extra
         )
     if state == "Transition":
         return (
@@ -111,6 +121,10 @@ def summarize_analysis(
         "speaking_time_seconds": _round(audio_result.get("speaking_time_seconds") or 0, 1),
         "pause_count": int(audio_result.get("pause_count") or 0),
         "pause_ratio": _round(audio_result.get("pause_ratio") or 0, 3),
+        "question_count": int(audio_result.get("question_count") or 0),
+        "talk_ratio": _round(audio_result.get("talk_ratio") or 0, 2),
+        "vocabulary_diversity": _round(audio_result.get("vocabulary_diversity") or 0, 2),
+        "keywords": list(audio_result.get("keywords") or [])[:6],
         "teacher_movement_proxy": _round(teacher_movement_proxy, 1),
         "engagement_score": _round(engagement_score, 1),
         "activity_index": _round(activity_index, 1),

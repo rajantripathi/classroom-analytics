@@ -324,18 +324,21 @@ def main():
 
         # --- scenario 3: instructional balance ---
         dict(key="04_c3_slide", kind="slide",
-             narration=(f"Add speech, and a new dimension opens up. The platform measured a "
-                        f"speaking pace near {round(s3['speaking_pace_wpm'])} words a minute and "
-                        f"almost {round(s3['word_count'], -1)} words — a window into teacher-talk "
-                        f"versus student-work time, one of the most requested signals in education."),
-             render=lambda p: slide_clip(p, "Instructional Balance", "Teacher Speaking",
-                        [("Speaking Pace", f"{s3['speaking_pace_wpm']} WPM"), ("Word Count", s3['word_count']),
-                         ("Avg Occupancy", s3['average_occupancy']), ("State", s3['classroom_state'])],
-                        "Teacher-talk versus student-work time — one of the most requested signals in education — without identifying anyone.")),
+             narration=(f"Add speech, and something striking happens. From the audio alone, the "
+                        f"platform surfaced the lesson's focus — words like group, period, and "
+                        f"electronic configuration, the vocabulary of a chemistry lesson on the "
+                        f"periodic table. It measured a brisk {round(s3['speaking_pace_wpm'])} words "
+                        f"a minute, and counted {s3.get('question_count', 0)} questions — a clear "
+                        f"marker of interactive teaching."),
+             render=lambda p: slide_clip(p, "Understanding the lesson", "Teacher Speaking",
+                        [("Speaking Pace", f"{s3['speaking_pace_wpm']} WPM"), ("Questions Asked", s3.get('question_count', 0)),
+                         ("Talk Ratio", f"{s3.get('talk_ratio', 0) * 100:.0f}%"), ("Word Count", s3['word_count'])],
+                        "Lesson focus surfaced from speech: " + ", ".join((s3.get("keywords") or [])[:5])
+                        + " — with the teacher's questions counted as a marker of interactive teaching.")),
         dict(key="04_c3_footage", kind="footage", video=av(order[2]), start=2.0,
-             lt=("Teacher Speaking", f"{s3['speaking_pace_wpm']} WPM · {s3['word_count']} words"),
-             narration=("Cadence, word count, and a full transcript — captured without ever "
-                        "identifying who is speaking.")),
+             lt=("Teacher Speaking", f"{s3.get('question_count', 0)} questions · {s3['speaking_pace_wpm']} WPM"),
+             narration=("It even captures the lesson's keywords and a full transcript — the "
+                        "content of teaching — without ever identifying who is speaking.")),
 
         # --- scenario 4: whole room ---
         dict(key="05_c4_slide", kind="slide",

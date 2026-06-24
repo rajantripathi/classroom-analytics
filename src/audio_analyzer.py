@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 import subprocess
 import wave
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -22,6 +23,14 @@ def _empty_audio_result(status: str, message: str) -> dict[str, Any]:
         "speaking_time_seconds": 0.0,
         "pause_count": 0,
         "pause_ratio": 0.0,
+        "question_count": 0,
+        "talk_ratio": 0.0,
+        "unique_words": 0,
+        "vocabulary_diversity": 0.0,
+        "sentence_count": 0,
+        "avg_words_per_sentence": 0.0,
+        "keywords": [],
+        "sample_questions": [],
         "lesson_summary": "",
         "warnings": [message] if message else [],
     }
@@ -63,6 +72,51 @@ def _extract_audio(video_path: Path, output_dir: Path) -> tuple[Path | None, str
 
 def _word_count(text: str) -> int:
     return len(re.findall(r"\b[\w']+\b", text))
+
+
+_STOPWORDS = set(
+    (
+        "the a an and or but if then so to of in on at for with as is are was were be been being it its "
+        "this that these those i you he she we they them his her their our your my me him us do does did "
+        "have has had not no yes will would can could should may might must just about into over under up "
+        "down out off there here what when where why how which who whom while because now okay ok yeah "
+        "right like get got going go also let lets us am pm one two three"
+    ).split()
+)
+
+
+def _speech_insights(transcript: str, segments: list[dict[str, Any]]) -> dict[str, Any]:
+    """Lightweight, explainable analysis of *what was said* (not who said it).
+
+    Surfaces interactivity (questions), delivery (talk ratio), language richness,
+    and the lesson's most prominent keywords — defensible, aggregate signals with
+    no speaker identification.
+    """
+    words = re.findall(r"[a-zA-Z']+", transcript.lower())
+    sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", transcript) if s.strip()]
+    questions = [
+        s
+        for s in sentences
+        if s.endswith("?")
+        or re.match(
+            r"^(what|why|how|when|where|who|which|can|could|do|does|did|is|are|will|would|should)\b",
+            s.lower(),
+        )
+    ]
+    content = [w for w in words if w not in _STOPWORDS and len(w) > 2]
+    unique = set(words)
+    duration = max((float(s.get("end", 0)) for s in segments), default=0.0)
+    speaking = sum(max(0.0, float(s.get("end", 0)) - float(s.get("start", 0))) for s in segments)
+    return {
+        "question_count": len(questions),
+        "talk_ratio": round(speaking / duration, 2) if duration else 0.0,
+        "unique_words": len(unique),
+        "vocabulary_diversity": round(len(unique) / len(words), 2) if words else 0.0,
+        "sentence_count": len(sentences),
+        "avg_words_per_sentence": round(len(words) / len(sentences), 1) if sentences else 0.0,
+        "keywords": [w for w, _ in Counter(content).most_common(8)],
+        "sample_questions": questions[:3],
+    }
 
 
 def _summarize_transcript(transcript: str, max_sentences: int = 2) -> str:
@@ -210,6 +264,7 @@ def analyze_audio(video_path: str | Path, output_root: Path | None = None) -> di
     speaking_time = sum(max(0.0, float(item.get("end", 0)) - float(item.get("start", 0))) for item in segments)
     words_per_minute = (word_count / (speaking_time / 60.0)) if speaking_time > 0 else 0.0
     pause_count, pause_ratio = _pause_metrics(segments)
+    insights = _speech_insights(transcript, segments)
 
     return {
         "status": "ok",
@@ -224,5 +279,6 @@ def analyze_audio(video_path: str | Path, output_root: Path | None = None) -> di
         "pause_count": pause_count,
         "pause_ratio": pause_ratio,
         "lesson_summary": _summarize_transcript(transcript),
+        **insights,
         "warnings": [],
     }
