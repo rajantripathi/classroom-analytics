@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, benchmark, or dataset in your research, please cite it as below."
+title: "Classroom Intelligence Demo: Anonymous Aggregate Analytics"
+abstract: >
+  Streamlit prototype producing anonymous aggregate classroom analytics from local video clips.
+authors:
+  - family-names: "Tripathi"
+    given-names: "Rajan Prasad"
+    email: "rajan.tripathi@aut-edu.uz"
+    affiliation: "AUT AI2 Lab / Bikal Tech Transfer, Tashkent, Uzbekistan"
+type: software
+version: "0.1.0"
+date-released: "2026-06-29"
+license: "MIT"
+repository-code: "https://github.com/rajantripathi/classroom-analytics"
+keywords:
+  - "education"
+  - "classroom-analytics"
+  - "yolov8"
+  - "bytetrack"
+  - "streamlit"
+  - "computer-vision"
+  - "edtech"

@@ -1,5 +1,18 @@
 # Classroom Intelligence Demo
 
+<!-- badges-start -->
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Python](https://img.shields.io/badge/python-3.10-blue.svg)
+![Last Commit](https://img.shields.io/github/last-commit/rajantripathi/classroom-analytics)
+![Stars](https://img.shields.io/github/stars/rajantripathi/classroom-analytics?style=social)
+![Issues](https://img.shields.io/github/issues/rajantripathi/classroom-analytics)
+![Code Style: ruff](https://img.shields.io/badge/code%20style-ruff-261230.svg)
+![yolov8](https://img.shields.io/badge/yolov8-informational.svg)
+![edtech](https://img.shields.io/badge/edtech-informational.svg)
+![streamlit](https://img.shields.io/badge/streamlit-informational.svg)
+<!-- badges-end -->
+
+
 A lean Streamlit prototype that explores a Smart Education and Classroom Intelligence concept. The demo uses local classroom clips to produce anonymous aggregate analytics: occupancy, movement energy, transition intensity, stationary/seated proxies, speech cadence, and exportable reports.
 
 This prototype uses pretrained YOLOv8n inference and rule-based demo proxy metrics. It has not been trained or fine-tuned on the four classroom clips; those clips are local demo inputs only.
